@@ -121,6 +121,15 @@ class MainWindow(QMainWindow):
             return "-"
         return "L" if a == 0 else "R"
 
+    def print_q_table(self):
+        """Печать Q-таблицы в консоль."""
+        print("\n=== Q-таблица ===")
+        for state, row in enumerate(self.agent.q_table):
+            l_val = row[0]
+            r_val = row[1] if len(row) > 1 else None
+            print(f"state {state:2d}: L={l_val:7.3f} | R={r_val:7.3f}")
+        print("=================\n")
+
     def on_reset_clicked(self):
         """Сбросить состояние среды и перерисовать поле."""
         if self.timer.isActive():
@@ -141,7 +150,7 @@ class MainWindow(QMainWindow):
             обучение на N эпизодах без анимации, максимально быстро.
         """
         if self.timer.isActive():
-            # если вдруг уже идет анимация, сначала её остановим
+            # если уже идёт анимация, сначала остановим
             self.timer.stop()
 
         text = self.episodes_input.text().strip()
@@ -189,6 +198,14 @@ class MainWindow(QMainWindow):
 
         if done:
             self.timer.stop()
+            success = self.env.state == self.env.goal_state
+            print(
+                f"[SINGLE] episode={self.current_episode}, "
+                f"steps={self.current_step}, success={success}, "
+                f"epsilon={self.agent.epsilon:.3f}"
+            )
+            self.print_q_table()
+
             # немного уменьшаем epsilon после эпизода
             self.agent.decay_epsilon(decay_rate=0.99)
             self.run_button.setEnabled(True)
@@ -196,6 +213,9 @@ class MainWindow(QMainWindow):
 
     def train_many_episodes(self, n_episodes: int):
         """Быстрая тренировка без анимации."""
+        total_steps = 0
+        success_count = 0
+
         for _ in range(n_episodes):
             self.current_episode += 1
             state = self.env.reset()
@@ -209,13 +229,29 @@ class MainWindow(QMainWindow):
                 state = next_state
                 self.current_step += 1
 
+            total_steps += self.current_step
+            if self.env.state == self.env.goal_state:
+                success_count += 1
+
             # после каждого эпизода уменьшаем epsilon
             self.agent.decay_epsilon(decay_rate=0.99)
+
+        success_rate = success_count / n_episodes * 100.0
+        avg_steps = total_steps / n_episodes if n_episodes > 0 else 0.0
+
+        print(
+            f"[FAST] episodes={n_episodes}, "
+            f"successes={success_count}, "
+            f"success_rate={success_rate:.1f}%, "
+            f"avg_steps={avg_steps:.2f}, "
+            f"epsilon={self.agent.epsilon:.3f}"
+        )
+        self.print_q_table()
 
         self.last_reward = reward
         self.last_action = action
         self.update_cells()
         self.info_label.setText(
-            f"Быстрая тренировка: {n_episodes} эпизодов завершено. "
-            f"Текущий epsilon: {self.agent.epsilon:.3f}"
+            f"Быстрая тренировка: {n_episodes} эпизодов. "
+            f"Успехов: {success_count} ({success_rate:.1f}%)."
         )

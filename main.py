@@ -7,7 +7,7 @@ from ui import MainWindow
 def main():
     app = QApplication(sys.argv)
 
-    env = LineEnv(length=4)
+    env = LineEnv(length=50)
     window = MainWindow(env)
     window.show()
 

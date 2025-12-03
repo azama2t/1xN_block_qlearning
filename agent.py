@@ -1,4 +1,5 @@
 import random
+from const import min_epsilon
 
 class QLearningAgent:
     def __init__(self, n_states : int, n_actions : int, alpha=0.1, gamma=0.9, epsilon=0.3):
@@ -58,3 +59,5 @@ class QLearningAgent:
         Уменьшение epsilon для уменьшения случайных действий со временем
         """
         self.epsilon *= decay_rate
+        if self.epsilon < min_epsilon:
+            self.epsilon = min_epsilon

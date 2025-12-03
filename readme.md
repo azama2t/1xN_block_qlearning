@@ -1,10 +1,6 @@
 # Line Walker - демо Q-learning
 
-<img width="631" height
-
 https://github.com/user-attachments/assets/de6d98aa-9038-4f2f-b419-ea1c4e8e0c56
-
-="171" alt="image" src="https://github.com/user-attachments/assets/1ff55708-2665-419b-929d-fee3d990aa47" />
 
 
 Небольшой учебный проект по обучению с подкреплением.  

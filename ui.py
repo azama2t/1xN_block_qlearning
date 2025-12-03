@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
 
         # таймер для анимированного одиночного эпизода
         self.timer = QTimer(self)
-        self.timer.setInterval(500)  # 0.5 секунды между шагами
+        self.timer.setInterval(10)  # 0.5 секунды между шагами
         self.timer.timeout.connect(self.single_episode_step)
 
         self.setWindowTitle("RL демо - линия 0..9")

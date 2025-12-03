@@ -1,5 +1,12 @@
 # Line Walker - демо Q-learning
 
+<img width="631" height
+
+https://github.com/user-attachments/assets/de6d98aa-9038-4f2f-b419-ea1c4e8e0c56
+
+="171" alt="image" src="https://github.com/user-attachments/assets/1ff55708-2665-419b-929d-fee3d990aa47" />
+
+
 Небольшой учебный проект по обучению с подкреплением.  
 Агент учится двигаться по одномерной линии от старта до цели, используя табличный Q-learning.  
 Есть простой интерфейс на PyQt5, чтобы визуально смотреть, как он начинает "понимать", куда идти.
@@ -56,6 +63,9 @@
 - столбцы — действия (`action`).
 
 В коде это `q_table[state][action]`.
+
+<img width="925" height="308" alt="image" src="https://github.com/user-attachments/assets/6c20012c-3088-4c6e-b3b9-43e3f8ba30cb" />
+
 
 Смысл числа `Q(s, a)`:
 
